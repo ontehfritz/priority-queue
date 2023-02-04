@@ -7,8 +7,13 @@ class PriorityQueue {
         this.count = 0;
     }
 
-    length = function () {
-        return this.count;
+    length() 
+    {
+        let totalItems = 0;
+        for(let priority of Object.keys(this.store)) {
+            totalItems += this.store[priority].length;
+        }
+        return totalItems;
     };
 
     add(value, priority) {
@@ -37,7 +42,7 @@ class PriorityQueue {
         return Object.keys(this.store);
     }
     // iterates through all the queue elements in priority-then-FIFO order
-    forEach(callback) {
+    getItems(callback) {
         var keys = Object.keys(this.store).sort();
 
         for (var a = keys.length; a > 0; a--) {
@@ -48,7 +53,7 @@ class PriorityQueue {
 
     changePriority(value, newPriority) {
         var foundItem = false;
-        
+        //instead of a function loop I prefer for of loops,they are easier to debug
         for(let priority of Object.keys(this.store)) {
             for(let item of this.store[priority]) {
                 if(item === value) {
@@ -59,6 +64,7 @@ class PriorityQueue {
                 }
             }
         }
+        if(foundItem === false) throw new Error('Item not found in queue');
     }
 }
 

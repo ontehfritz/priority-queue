@@ -1,9 +1,8 @@
 const PriorityQueue = require('../src/priority.queue');
-
 /**
- * Keeping the structure of the tests simple for this execrices but there are nice
- * was to group jest tests into suites and use describe() and it() also being to provide 
- * mutiple inputs. I usually promote every bug found becomes a test case.
+ * Keeping the structure of the tests simple for this execrice, but there are nice
+ * was to group jest tests into suites and use describe() and it() 
+ * I usually promote every bug found into a test case.
  */
 test('test add item to queue', () => {
     let queue = new PriorityQueue();
@@ -20,6 +19,23 @@ test('test add item to queue', () => {
     }
     expect(queue.count).toBe(3);
 });
+
+test('test item length', () => {
+    let queue = new PriorityQueue();
+    expect(queue.count).toBe(0);
+
+    try{
+        queue.add(1, 1);
+        queue.add(2, 1);
+        queue.add(1, 2);
+    }
+    catch(e){
+        //simple way to fail a test on exception
+        expect(true).toBe(false);
+    }
+    expect(queue.length()).toBe(3);
+});
+
 
 test('test pop item from queue', () => {
     let queue = new PriorityQueue();
@@ -97,4 +113,28 @@ test('test change priority', () => {
     expect(queue.count).toBe(4);
 });
 
+test('test getItems', () => {
+    let queue = new PriorityQueue();
+    expect(queue.count).toBe(0);
+    try{
+        queue.add(1, 1);
+        queue.add(2, 1);
+        queue.add(5, 2);
+        queue.add(4, 2);
+    }
+    catch(e){
+        //simple way to fail a test on exception
+        expect(true).toBe(false);
+    }
 
+    try{
+        queue.getItems(printItem);
+        expect(true).toBe(true);
+    }catch(error){
+        expect(true).toBe(false);
+    }
+});
+
+function printItem(item){
+    console.log(item);
+}
