@@ -4,7 +4,6 @@
 class PriorityQueue {
     constructor() {
         this.store = new Map(); // keys are priorities, values are arrays of elements
-        this.count = 0;
     }
 
     length() 
@@ -24,17 +23,16 @@ class PriorityQueue {
             this.store[intPriority] = [];
 
         this.store[intPriority].push(value);
-        this.count++;
     };
 
     pop() {
         let maxKey = Math.max(...Object.keys(this.store));
-        if(this.count === 0) return null;
+        if(this.length() === 0) return null;
         if (this.store[maxKey].length === 0) {
             delete this.store[maxKey];
             return this.pop();
         }
-        this.count--;
+        
         return this.store[maxKey].shift();
     };
 
