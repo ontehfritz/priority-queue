@@ -1,11 +1,20 @@
 /**
- * A priority queue implementation using a hash table.
+ * A priority queue stores a list of items but each can have a numeric priority value.
+ * Items with a higher priority are dequeued before items with a lower priority.
+ * Implemented as a hash of arrays where the hash keys are priority values.
+ */
+/**
+ * Typescript is getting heavy acceptance in the industry and preference would be to rewrite it in TS
+ * as there are many advantages. 
  */
 class PriorityQueue {
     constructor() {
         this.store = new Map(); // keys are priorities, values are arrays of elements
     }
-
+    /**
+     * length returns the number of items in the queue
+     * @returns totalItems
+     */
     length() 
     {
         let totalItems = 0;
@@ -15,6 +24,11 @@ class PriorityQueue {
         return totalItems;
     };
 
+    /**
+     * adds an item to the queue, creates a bucket if one does not exist for the priority
+     * @param {*} value 
+     * @param {*} priority 
+     */
     add(value, priority) {
         //let this throw, if following liskov substitution principle, a custom exception
         //should be thrown here for all implementations, changing exceptions is a breaking change
@@ -25,6 +39,10 @@ class PriorityQueue {
         this.store[intPriority].push(value);
     };
 
+    /**
+     * dequeues items from the priority buckets if non exist then returns null 
+     * @returns the oldest added value with the highest priority
+     */
     pop() {
         let maxKey = Math.max(...Object.keys(this.store));
         if(this.length() === 0) return null;
@@ -35,11 +53,20 @@ class PriorityQueue {
         
         return this.store[maxKey].shift();
     };
-
+    
+    /**
+     * 
+     * @returns all priorities currently being used 
+     */
     getAllPriorities() {
         return Object.keys(this.store);
     }
-    // iterates through all the queue elements in priority-then-FIFO order
+
+    /**
+     * iterates through all the queue elements in priority-then-FIFO order
+     * replaces the forEach for a more intuitive method, see tests for usuage
+     * @param {*} callback 
+     */
     getItems(callback) {
         var keys = Object.keys(this.store).sort();
 
@@ -49,6 +76,12 @@ class PriorityQueue {
         }
     }
 
+    /**
+     * this will change an items priority if it exists, else throws 
+     * newPriority must be an int or it throws a parse error
+     * @param {*} value 
+     * @param {*} newPriority 
+     */
     changePriority(value, newPriority) {
         //let this throw, if following liskov substitution principle, a custom exception
         //should be thrown here for all implementations, changing exceptions is a breaking change

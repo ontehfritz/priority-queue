@@ -4,6 +4,10 @@ const PriorityQueue = require('../src/priority.queue');
  * was to group jest tests into suites and use describe() and it() 
  * I usually promote every bug found into a test case.
  */
+
+/**
+ * test adding to queue, an exception can be thrown if priority is not numeric
+ */
 test('test add item to queue', () => {
     let queue = new PriorityQueue();
     expect(queue.length()).toBe(0);
@@ -20,6 +24,10 @@ test('test add item to queue', () => {
     expect(queue.length()).toBe(3);
 });
 
+/**
+ * Test is length works correctly which gets the amount of items in the queue
+ * Not how many priority buckets, removed count as that was error prone
+ */
 test('test item length', () => {
     let queue = new PriorityQueue();
     expect(queue.length()).toBe(0);
@@ -36,7 +44,9 @@ test('test item length', () => {
     expect(queue.length()).toBe(3);
 });
 
-
+/**
+* test poping when there is nothing left to pop, null value
+*/
 test('test pop item from queue', () => {
     let queue = new PriorityQueue();
     expect(queue.length()).toBe(0);
@@ -74,6 +84,9 @@ test('test pop item from queue', () => {
     expect(item).toBe(null);
 });
 
+/**
+ * test getting all the priorities, not items
+ */
 test('get all priorities', () => {
     let queue = new PriorityQueue();
     expect(queue.length()).toBe(0);
@@ -91,6 +104,9 @@ test('get all priorities', () => {
     expect(priorities.length).toBe(2);
 });
 
+/**
+ * Change priorities test if it will add another priority bucket
+ */
 test('test change priority', () => {
     let queue = new PriorityQueue();
     expect(queue.length()).toBe(0);
@@ -113,6 +129,9 @@ test('test change priority', () => {
     expect(queue.length()).toBe(3);
 });
 
+/**
+ * removed the forEach in favour of getItems method which excepts a callback
+ */
 test('test getItems', () => {
     let queue = new PriorityQueue();
     expect(queue.length()).toBe(0);
@@ -134,7 +153,7 @@ test('test getItems', () => {
         expect(true).toBe(false);
     }
 });
-
+//callback for getItems
 function printItem(item){
     console.log(item);
 }

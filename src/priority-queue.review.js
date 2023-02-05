@@ -5,27 +5,29 @@
  */
 
 /**
- * REVIEW (because there are fair number of improvements with this PR, in the real world I would 
- * do this incrementally as draft PR, because there are so many changes; that it can be overwhelming to the developer): 
+ * REVIEW: (because there are fair number of improvements with this PR, in the real world I would 
+ * do this incrementally as draft PR, because there are so many changes,
+ * that it can be overwhelming to the developer :)  
  * 
  * The priority queue needs a bit of JS modernization. Also any code that does not have tests 
  * typically wouldn't make it to production. The code looks a bit dated/legacy. Therefore, tests are even more 
- * crucial for recatoring as the will allow 
- * developers to code fearlessly; without the worry of breaking something and maintaining compatible
- * with the consumers of the library. Test also help self document the code as 
+ * crucial for refactoring as this will allow developers to code fearlessly; without the worry of breaking something 
+ * and maintaining compatiblty with the consumers of the library. Test also help self document the code as 
  * expected inputs and outputs are clearly defined, and shows how to use the class/function/library.
  */
 
 /**
- * REVIEW: this function should be converted to a class to make the use more intuitive and can get rid
- * of using prototype. 
+ * REVIEW: this function should be converted to a class syntax to make the use more intuitive and 
+ * can get rid of using prototype throughout the class
  * @param {*} size REVIEW: This parameter is not used. Do we need it?
  */
 function PriorityQueue(size) {
 	this.store = {};	// keys are priorities, values are arrays of elements
-    //REVIEW: it is hard to infer if this is suppose to be the number of items or priority levels
+
+    //REVIEW: it is hard to infer if count is suppose to be the number of items or priority levels
     //tracking items manually can be tricky and error prone. Can always iterate over the store to get the number of items.
-    //Not as performant but more reliable. 
+    //not as performant but more reliable. Also count can be mutated by anyone and can lead to 
+	//unwanted side affects 
 	this.count = 0; 
 	// adds an item
 	// priority must be an integer (higher value has higher priority)
@@ -47,22 +49,25 @@ function PriorityQueue(size) {
      * be consistent with the rest of the code base.
      */ 
 	this.Pop = function() {
-        //REVIEW: define this as const or let, this makes it hard to tell scope and should always declare
-        //variables with const or let 
+        //REVIEW: define maxKey as const or let, this makes it hard to tell scope and should always declare
+        //variables with const or let; const if not changing, let for mutable
         //Object keys need to be spread to work correctly example: ...Object.keys(this.store)
+		//This fails if you add more than 1 priority bucket
 		maxKey = Math.max(Object.keys(this.store));
 		this.count--;
         //Review: this is great, good use of shift for FIFO
 		return this.store[maxKey].shift();
 	};
-    //REVIEW: once agian make this explicit, items or the how many priority levels
+	/** REVIEW: iterate through and sum the total from the buckets (this.store) more reliable, 
+	 * we can optimize if needed
+	 */
 	this.length = function() {
 		return this.count;
 	}
 }
 /**
- * REVIEW: This function should be renamed to getPriorities() method in the
- * class to be more idomatic of modern JS and
+ * REVIEW: This function should be renamed to getAllPriorities() method in the
+ * class to be more idomatic of modern JS and consistent throughout the style of the code,
  * remove the use of prototype.
  */
 PriorityQueue.prototype.get_all_priorities = function() {
@@ -71,8 +76,8 @@ PriorityQueue.prototype.get_all_priorities = function() {
 
 // iterates through all the queue elements in priority-then-FIFO order
 /**
- * REVIEW: A more descriptive name would be a sort() method, also using prootype
- * on a forEach it is overwriting a native JS method which is not a good practice.  
+ * REVIEW: A more descriptive name method name would be better then overriding the forEach
+ * also using prototype is not ideal  
  */
 PriorityQueue.prototype.forEach = function(callback) {
     //REVIEW: use let instead of var, var is not idomatic of modern JS
@@ -91,6 +96,9 @@ PriorityQueue.prototype.forEach = function(callback) {
 PriorityQueue.prototype.changePriority = function(value, newPriority) {
     //REVIEW: use let instead of var, var is not idomatic of modern JS
     //should parse the newPriority to a number and throw an error if it can't be parsed.
+	//my preference is to not use forEach method and use `for of` on collections
+	//makes it easier for new devs especially coming from a different stack, debugging is more 
+	//intuitive 
 	var foundItem = false;
 	this.store.forEach(function(bucket) {
 		bucket.forEach(function(item, index) {
@@ -106,4 +114,4 @@ PriorityQueue.prototype.changePriority = function(value, newPriority) {
 	});
 }
 //REVIEW: add the export to be usuable in other files
-module.exports = { PriorityQueue };
+//module.exports = { PriorityQueue };
