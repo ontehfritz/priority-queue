@@ -50,13 +50,16 @@ class PriorityQueue {
     }
 
     changePriority(value, newPriority) {
+        //let this throw, if following liskov substitution principle, a custom exception
+        //should be thrown here for all implementations, changing exceptions is a breaking change
+        const intNewPriority = parseInt(newPriority);
         var foundItem = false;
         //instead of a function loop I prefer for of loops,they are easier to debug
         for(let priority of Object.keys(this.store)) {
             for(let item of this.store[priority]) {
                 if(item === value) {
                     this.store[priority].splice(this.store[priority].indexOf(item), 1);
-                    this.add(value, newPriority);
+                    this.add(value, intNewPriority);
                     foundItem = true;
                     break;
                 }
