@@ -24,6 +24,8 @@
 function PriorityQueue(size) {
 	this.store = {};	// keys are priorities, values are arrays of elements
     //REVIEW: it is hard to infer if this is suppose to be the number of items or priority levels
+    //tracking items manually can be tricky and error prone. Can always iterate over the store to get the number of items.
+    //Not as performant but more reliable. 
 	this.count = 0; 
 	// adds an item
 	// priority must be an integer (higher value has higher priority)
